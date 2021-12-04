@@ -98,11 +98,11 @@ void northWallMission()
 
 	lineFollowUntilLine(10,rightSensor,rightEdge,black,true);
 
-	moveRightAttachmentMotorDegrees(100,600,false);
+	moveRightAttachmentMotorDegrees(100,650,false);
 
 	sleep(500);
 
-	moveRightAttachmentMotorDegrees(100,-600,false);
+	moveRightAttachmentMotorDegrees(100,-650,false);
 
 	driveStraightEncoderDistance(15, 6.7, true);
 
@@ -133,17 +133,19 @@ void northWallMission()
 void blueBoxMission()
 {
 
+	sleep(500);
+
 	// Reset the gyroscoe and wait 100ms to settle
 	resetGyro(gyro);
+
 	sleep(200);
 
-	driveStraightGyroDistance(20, 2, 0, false);
-	driveStraightGyroDistance(50, 18, 0, true);
+		driveStraightEncoderDistance(40, 22.5, true);
 
-	sideTurnUsingGyro(20, -90, false);
+		centerTurnUsingGyro(20, -90, true);
 
+		driveStraightEncoderDistance(50, 19, true);
 
-	driveStraightEncoderDistance(60,10,false);
 
 
 }
