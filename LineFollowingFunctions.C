@@ -88,10 +88,11 @@ void lineFollowForDistance(float speed, float inchesToMove,  string colorSensorT
 
 	}
 
+	setBrakeMode(brakeMode);
 
 	turnOffDriveMotors();
 
-	setBrakeMode(brakeMode);
+
 
 
 }
@@ -222,15 +223,27 @@ void lineFollowUntilLine(float speed, string colorSensorToUse, string edgeToUse,
 
 	}
 
+	// Set brake mode
+	setBrakeMode(brakeMode);
+
 	// Turn off motors
 	turnOffDriveMotors();
 
-	// Set brake mode
-	setBrakeMode(brakeMode);
+
 
 
 }
 
+
+
+//----------------------------------------------------------------------------------------------------
+// Name: sideTurnUntilLine
+//----------------------------------------------------------------------------------------------------
+// Description:
+//----------------------------------------------------------------------------------------------------
+//Inputs:
+//
+//----------------------------------------------------------------------------------------------------
 
 void sideTurnUntilLine(float speed, string colorSensorToUse, string colorToLookFor, bool brakeMode)
 {
@@ -254,8 +267,6 @@ void sideTurnUntilLine(float speed, string colorSensorToUse, string colorToLookF
     lightLevelToLookFor = ((reflectedLightIntensityOnWhite + reflectedLightIntensityOnBlack) / 2);
 
 	}
-
-
 
 	// Get the initial current value based upon which sensor to use - Use the one not using for the line following
 	if (colorSensorToUse == "leftSensor")				// Use the left color sensor
@@ -318,12 +329,123 @@ void sideTurnUntilLine(float speed, string colorSensorToUse, string colorToLookF
 			if ((colorSensorDetecting > lightLevelToLookFor - 10) && (colorSensorDetecting < lightLevelToLookFor + 10))  foundLine = true;
 		}
 
+
 	}
+
+	// Set brake mode
+	setBrakeMode(brakeMode);
 
 	// Turn off motors
 	turnOffDriveMotors();
 
+
+
+}
+
+
+
+//----------------------------------------------------------------------------------------------------
+// Name: centerTurnUntilLine
+//----------------------------------------------------------------------------------------------------
+// Description:
+//----------------------------------------------------------------------------------------------------
+//Inputs:
+//
+//----------------------------------------------------------------------------------------------------
+void centerTurnUntilLine(float speed, string colorSensorToUse, string colorToLookFor, bool brakeMode)
+{
+
+	float lightLevelToLookFor;
+	float colorSensorDetecting;
+	bool foundLine;
+
+
+	// Compute the limtis for stopping;
+	if (colorToLookFor == "white")     // Look for white
+  {
+    lightLevelToLookFor = reflectedLightIntensityOnWhite - 10;
+  }
+  else if (colorToLookFor == "black")     // Look for black
+  {
+    lightLevelToLookFor = reflectedLightIntensityOnBlack + 10;
+  }
+  else
+	{
+    lightLevelToLookFor = ((reflectedLightIntensityOnWhite + reflectedLightIntensityOnBlack) / 2);
+
+	}
+
+	// Get the initial current value based upon which sensor to use - Use the one not using for the line following
+	if (colorSensorToUse == "leftSensor")				// Use the left color sensor
+	{
+		colorSensorDetecting = getColorReflected(leftColor);
+	}
+	else																				// Use the right color sensor
+	{
+		colorSensorDetecting = getColorReflected(rightColor);
+	}
+
+
+	if (speed > 0)					// Right Turn
+	{
+		setMotorSpeed(leftDrive, speed);
+		setMotorSpeed(rightDrive, -speed);
+
+	}
+	else
+	{
+		speed = -speed;
+		setMotorSpeed(leftDrive, -speed);
+		setMotorSpeed(rightDrive, speed);
+
+	}
+
+	foundLine = false;
+
+
+	/* move forward until the encoder value is greater then the degrees to move
+		&&  	Logical And
+		+			Logical Or
+		!=  	Not Equal To
+	*/
+	// If looking for white, continue while the sensor is less than the limit.
+	// If looking for black, continue while the sensor is greater than the limit.
+	//	   Looking for White  and  Current Sensor Value < Limit  		or    Looking for Black  and   Current Sensor Value > Limit
+	while (!foundLine)
+	{
+
+		if (colorSensorToUse == "leftSensor")				// Use the left color sensor
+		{
+			colorSensorDetecting = getColorReflected(leftColor);
+		}
+		else														// Use the right color sensor
+		{
+			colorSensorDetecting = getColorReflected(rightColor);
+		}
+
+		// Dtecting if we found the line
+		if (colorToLookFor == "white")
+		{
+			if (colorSensorDetecting > lightLevelToLookFor) foundLine = true;
+		}
+		else if (colorToLookFor == "black")
+		{
+			if (colorSensorDetecting < lightLevelToLookFor) foundLine = true;
+		}
+		else				//Assume grey
+		{
+			if ((colorSensorDetecting > lightLevelToLookFor - 10) && (colorSensorDetecting < lightLevelToLookFor + 10))  foundLine = true;
+		}
+
+
+	}
+
 	// Set brake mode
 	setBrakeMode(brakeMode);
+
+	// Turn off motors
+	turnOffDriveMotors();
+
+
 
 }

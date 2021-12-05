@@ -6,7 +6,7 @@
 // 	and then drives at the speed for each motor for the number of rotations.
 // 	When it is finished, it then sets the brakes or coasts depending on the brake mode.
 //      The wheel diameter of the robot is 62.4mm, which is 2.456693 inches.
-//      Wheel circumfrence is Pi x Diameter = 2.456693 x 3.14159 = 7.717922162 inches per ratation.  
+//      Wheel circumfrence is Pi x Diameter = 2.456693 x 3.14159 = 7.717922162 inches per ratation.
 //----------------------------------------------------------------------------------------------------
 //Inputs:
 //	leftSpeed	Float	Speed of left wheel
@@ -19,10 +19,10 @@ void driveEncoderDistance(float leftspeed, float rightSpeed, float inchesToMove,
 
 	float degreesToMove;
 	float rotationsToMove;
-	
+
 	rotationsToMove = inchesToMove / 7.717922162;
 
-	// Always make sure rotations is positive.  If it is negative, ignore it.   Needs to have negative speed to go backwards. 
+	// Always make sure rotations is positive.  If it is negative, ignore it.   Needs to have negative speed to go backwards.
 	if (rotationsToMove < 0)
 	{
 			rotationsToMove = -rotationsToMove;
@@ -31,10 +31,7 @@ void driveEncoderDistance(float leftspeed, float rightSpeed, float inchesToMove,
 	// Compute the number of degrees to move.
 	degreesToMove = 360 * rotationsToMove;
 
-
-	// Remove the brakes if they are applied
-	setDriveMotorsToCoast();
-
+	setBrakeMode(brakeMode);
 
 	// Reset the Motor Encoders
 	resetDriveMotorEncoders();
@@ -50,10 +47,12 @@ void driveEncoderDistance(float leftspeed, float rightSpeed, float inchesToMove,
 
 	}
 
+
+
 	turnOffDriveMotors();
 
 
-	setBrakeMode(brakeMode);
+
 
 
 }
@@ -66,9 +65,9 @@ void driveEncoderDistance(float leftspeed, float rightSpeed, float inchesToMove,
 // Description: we always make sure that the roatations is positive and compute the numbers of degreesToMove
 // we remove the brakes and reset the motor encoders. we then turn off drive motors and set brake mode
 //----------------------------------------------------------------------------------------------------
-//Inputs: speed    			float           speed we want to go at 
+//Inputs: speed    			float           speed we want to go at
 //        inchesToMove      float           inches we want to move
-//        brakeMode         bool            coast or brake 
+//        brakeMode         bool            coast or brake
 //----------------------------------------------------------------------------------------------------
 void driveStraightEncoderDistance(float speed, float inchesToMove, bool brakeMode)
 {
@@ -81,7 +80,7 @@ void driveStraightEncoderDistance(float speed, float inchesToMove, bool brakeMod
 	float rotationsToMove;
 
 	rotationsToMove = inchesToMove / 7.717922162;
-	
+
 	// Always make sure rotations is positive.
 	if (rotationsToMove < 0)
 	{
@@ -91,8 +90,7 @@ void driveStraightEncoderDistance(float speed, float inchesToMove, bool brakeMod
 	// Compute the number of degrees to move.
 	degreesToMove = 360 * rotationsToMove;
 
-	// Remove the brakes if they are applied
-	setDriveMotorsToCoast();
+	setBrakeMode(brakeMode);
 
 	// Reset the Motor Encoders
 	resetDriveMotorEncoders();
@@ -112,9 +110,104 @@ void driveStraightEncoderDistance(float speed, float inchesToMove, bool brakeMod
 
 	turnOffDriveMotors();
 
-	setBrakeMode(brakeMode);
 
 }
 
+//----------------------------------------------------------------------------------------------------
+// Name:   driveStraightUntilLine
+//----------------------------------------------------------------------------------------------------
+// Description:
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+void driveStraightUntilLine(float speed, string colorSensorToUse, string colorToLookFor, bool brakeMode)
+{
 
-// this is pizza
+	float error;
+	float correctionFactor;
+	float speedLeft;
+	float speedRight;
+
+	float lightLevelToLookFor;
+	float colorSensorDetecting;
+	bool foundLine;
+
+
+	// Compute the limtis for stopping;
+	if (colorToLookFor == "white")     // Look for white
+  {
+    lightLevelToLookFor = reflectedLightIntensityOnWhite - 10;
+  }
+  else if (colorToLookFor == "black")     // Look for black
+  {
+    lightLevelToLookFor = reflectedLightIntensityOnBlack + 10;
+  }
+  else
+	{
+    lightLevelToLookFor = ((reflectedLightIntensityOnWhite + reflectedLightIntensityOnBlack) / 2);
+
+	}
+
+
+	// Get the initial current value based upon which sensor to use - Use the one not using for the line following
+	if (colorSensorToUse == "leftSensor")				// Use the left color sensor
+	{
+		colorSensorDetecting = getColorReflected(leftColor);
+	}
+	else																				// Use the right color sensor
+	{
+		colorSensorDetecting = getColorReflected(rightColor);
+	}
+
+	// Set the foundline variable to false
+	foundLine = false;
+
+	// Turn on brakes or coast
+	setBrakeMode(brakeMode);
+
+	// Reset the Motor Encoders
+	resetDriveMotorEncoders();
+
+	while (!foundLine)
+	{
+
+		// Control speed with a proportiional controller getting the encoders to match distance
+		error = abs(getLeftMotorEncoder()) - abs(getRightMotorEncoder());
+		correctionFactor = error * .01;
+		speedLeft = speed - correctionFactor;
+		speedRight = speed + correctionFactor;
+
+		setMotorSpeed(leftDrive, speedLeft);
+		setMotorSpeed(rightDrive, speedRight);
+
+
+		// Read the correct color sensor
+		if (colorSensorToUse == "leftSensor")				// Use the left color sensor
+		{
+			colorSensorDetecting = getColorReflected(leftColor);
+		}
+		else														// Use the right color sensor
+		{
+			colorSensorDetecting = getColorReflected(rightColor);
+		}
+
+
+		// Dtecting if we found the line
+		if (colorToLookFor == "white")
+		{
+			if (colorSensorDetecting > lightLevelToLookFor) foundLine = true;
+		}
+		else if (colorToLookFor == "black")
+		{
+			if (colorSensorDetecting < lightLevelToLookFor) foundLine = true;
+		}
+		else				//Assume grey
+		{
+			if ((colorSensorDetecting > lightLevelToLookFor - 10) && (colorSensorDetecting < lightLevelToLookFor + 10))  foundLine = true;
+		}
+
+
+	}
+
+	turnOffDriveMotors();
+
+}

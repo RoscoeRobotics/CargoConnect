@@ -37,9 +37,10 @@ void sideTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 
 	{
 
+		setMotorBrakeMode(rightDrive,motorBrake);
 		setMotorSpeed(leftDrive, speed);
 		setMotorSpeed(rightDrive, 0);
-		setMotorBrakeMode(rightDrive,motorBrake);
+
 
 		while(getLeftMotorEncoder() > degreesToMove)
 		{
@@ -52,9 +53,9 @@ void sideTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 
 	{
 
+	  setMotorBrakeMode(leftDrive,motorBrake);
 		setMotorSpeed(leftDrive, 0);
 		setMotorSpeed(rightDrive, speed);
-		setMotorBrakeMode(leftDrive,motorBrake);
 
 		while(getRightMotorEncoder() < degreesToMove)
 		{
@@ -63,10 +64,9 @@ void sideTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 		}
 	}
 
+	setBrakeMode(brakeMode);
 
 	turnOffDriveMotors();
-
-	setBrakeMode(brakeMode);
 
 }
 
@@ -133,11 +133,8 @@ void centerTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 	{
 	}
 
-
-
-	turnOffDriveMotors();
-
 	setBrakeMode(brakeMode);
 
+	turnOffDriveMotors();
 
 }

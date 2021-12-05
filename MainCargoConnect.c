@@ -40,21 +40,15 @@ string white;
 
 void displayMissionName(int missionIndex)
 {
-	// 0 = North Wall Mission
-	// 1 = Center Mission
-	// 2 = South Wall Mission
-	// 3 = East Wall Mission
-	// 4 = End Mission
 
-
-	if (missionIndex == 0) displayCenteredBigTextLine(2, "Blue Box" );
-	if (missionIndex == 1) displayCenteredBigTextLine(2, "North Wall" );
-	if (missionIndex == 2) displayCenteredBigTextLine(2, "Center" );
+	if (missionIndex == 0) displayCenteredBigTextLine(2, "Center" );
+	if (missionIndex == 1) displayCenteredBigTextLine(2, "Get Blue Box" );
+	if (missionIndex == 2) displayCenteredBigTextLine(2, "North Wall" );
 	if (missionIndex == 3) displayCenteredBigTextLine(2, "South Wall" );
 	if (missionIndex == 4) displayCenteredBigTextLine(2, "East Wall" );
-	if (missionIndex == 5) displayCenteredBigTextLine(2, "End" );
-	if (missionIndex == 6) displayCenteredBigTextLine(2, "Clean Wheels" );
-
+	if (missionIndex == 5) displayCenteredBigTextLine(2, "Push Blue Box" );
+	if (missionIndex == 6) displayCenteredBigTextLine(2, "End Mission" );
+	if (missionIndex == 7) displayCenteredBigTextLine(2, "Clean Wheels" );
 
 }
 
@@ -91,7 +85,7 @@ task main()
 			sleep (250);
 
 		}
-		else if(getButtonPress(buttonRight) == 1 && missionIndex < 6)
+		else if(getButtonPress(buttonRight) == 1 && missionIndex < 7)
 		{
 
 			missionIndex = missionIndex + 1;
@@ -109,13 +103,14 @@ task main()
 		if (getButtonPress(buttonEnter) == 1)
 		{
 
-				if (missionIndex == 0) blueBoxMission();
-				if (missionIndex == 1) northWallMission();
-				if (missionIndex == 2) secondCenterMission();
+				if (missionIndex == 0) secondCenterMission();
+				if (missionIndex == 1) getBlueBoxMission();
+				if (missionIndex == 2) northWallMission();
 				if (missionIndex == 3) southWallMission();
 				if (missionIndex == 4) eastWallMission();
-				if (missionIndex == 5) endMission();
-				if (missionIndex == 6) cleanWheels();
+				if (missionIndex == 5) pushBlueBoxMission();
+				if (missionIndex == 6) endMission();
+				if (missionIndex == 7) cleanWheels();
 
 		}
 
