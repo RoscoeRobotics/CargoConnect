@@ -111,7 +111,7 @@ task main()
 
 				if (missionIndex == 0) blueBoxMission();
 				if (missionIndex == 1) northWallMission();
-				if (missionIndex == 2) centerMission();
+				if (missionIndex == 2) secondCenterMission();
 				if (missionIndex == 3) southWallMission();
 				if (missionIndex == 4) eastWallMission();
 				if (missionIndex == 5) endMission();

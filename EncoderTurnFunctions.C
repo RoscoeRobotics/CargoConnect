@@ -19,7 +19,7 @@ void sideTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 
 	float degreesToMove;
 	float momentum;
-	
+
 	momentum = (speed/5);
 
 	// Compute the degrees to move
@@ -39,6 +39,7 @@ void sideTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 
 		setMotorSpeed(leftDrive, speed);
 		setMotorSpeed(rightDrive, 0);
+		setMotorBrakeMode(rightDrive,motorBrake);
 
 		while(getLeftMotorEncoder() > degreesToMove)
 		{
@@ -53,7 +54,7 @@ void sideTurnEncoder(float speed, float degreesToTurn, bool brakeMode)
 
 		setMotorSpeed(leftDrive, 0);
 		setMotorSpeed(rightDrive, speed);
-
+		setMotorBrakeMode(leftDrive,motorBrake);
 
 		while(getRightMotorEncoder() < degreesToMove)
 		{
