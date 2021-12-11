@@ -1,13 +1,3 @@
-
-// This mission does the stuff in the center of the board  (Truck drop off, slip roads down)
-void centerMission()
-{
-
-
-
-}
-
-
 // This does the missions on the south wall.  (Door Deliver, Package Drop off)
 void southWallMission()
 {
@@ -16,24 +6,72 @@ void southWallMission()
 
 }
 
+
+
 // This does the missions on the east wall (Hellicopter, Cargo Ship)
 void eastWallMission()
 {
-	driveStraightGyroDistance(30,24,0,true);
-	centerTurnUsingGyro(25,90,true);
-	driveEncoderDistance(50,50,20,true);
-	lineFollowForDistance(30,5,rightSensor,rightEdge,true);
-	lineFollowUntilLine(20,leftSensor,leftEdge,white,true);
-	lineFollowUntilLine(20,leftSensor,leftEdge,black,true);
-	sideTurnUsingGyro(20,-90,true);
-	lineFollowUntilLine(20,rightSensor,rightEdge,white,true);
-	lineFollowUntilLine(20,rightSensor,rightEdge,black,true);
-	driveEncoderDistance(-20,-20,1,true);
-	moveLeftAttachmentMotorDegrees (50,-90,true);
-	centerTurnUsingGyro(25,90,true);
-	driveEncoderDistance(30,30,4,true);
-	driveEncoderDistance(-30,-30,4,true);
-	moveLeftAttachmentMotorDegrees (50,90,true);
+	// Drive to get on the line
+	driveStraightEncoderDistance(30, 5, false);
+
+	// Follow the line for distance a bit
+	lineFollowForDistance (20, 4, rightSensor, rightEdge, false);
+
+	// Line follow until white
+	lineFollowUntilLine(20, rightSensor, rightEdge,white,false);
+
+	// Line follow until Black
+	lineFollowUntilLine(20, rightSensor, rightEdge, black, false);
+
+	// Sound that it found the black line
+	playSound(soundBlip);
+
+	// drive to get ready for turn
+	driveStraightEncoderDistance(20, 9.5, true);
+
+	// Turn to the right until we see white.
+	sideTurnUntilLine(10, rightSensor, white, true);
+
+	// Turn to the right until we see black.
+	sideTurnUntilLine(10, rightSensor, black, true);
+
+	// Turn to the right until we see white.
+	sideTurnUntilLine(10, rightSensor, grey, true);
+
+	// line follow to get ready to lookfor the lines
+	lineFollowForDistance (20, 14, rightSensor, rightEdge, true);
+
+	// Line follow until white
+	lineFollowUntilLine(20,rightSensor,rightEdge,white,false);
+
+	// Line follow until Black
+	lineFollowUntilLine(20,rightSensor,rightEdge,black,false);
+
+	// turn to face the wall
+	centerTurnUsingGyro(10,-90,true);
+	driveStraightEncoderDistance(-10,4,true);
+
+	// Line follow until white
+	lineFollowUntilLine(10,leftSensor,rightEdge,white,true);
+
+	// Line follow until Black
+	lineFollowUntilLine(10,leftSensor,rightEdge,black,true);
+
+	//move back a little
+	driveStraightEncoderDistance(-10, 2, true);
+
+	// turn to face the crane
+	centerTurnUsingGyro(15,90,true);
+
+	//move the arm down
+	moveLeftAttachmentMotorDegrees(90,100,false);
+
+	// move the crane forward
+	driveStraightEncoderDistance(10,5,true);
+
+	// move back
+	driveStraightEncoderDistance(-15,5,true);
+
 
 
 }
@@ -174,22 +212,6 @@ void endMission()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //----------------------------------------------------------------------------------------------------
 // Name:northWallMission
 //----------------------------------------------------------------------------------------------------
@@ -292,6 +314,14 @@ void getBlueBoxMission()
 
 }
 
+
+//----------------------------------------------------------------------------------------------------
+// Name: pushBlueBoxMission
+//----------------------------------------------------------------------------------------------------
+// Description: Gets the blue box in case it is missed on the center mission
+//----------------------------------------------------------------------------------------------------
+//Inputs: None
+//----------------------------------------------------------------------------------------------------
 void pushBlueBoxMission()
 {
 
@@ -303,9 +333,14 @@ void pushBlueBoxMission()
 
 }
 
-
-
-void secondCenterMission()
+//----------------------------------------------------------------------------------------------------
+// Name: centerMission
+//----------------------------------------------------------------------------------------------------
+// Description: Gets the blue box in case it is missed on the center mission
+//----------------------------------------------------------------------------------------------------
+//Inputs: None
+//----------------------------------------------------------------------------------------------------
+void centerMission()
 {
 
 	sleep(500);

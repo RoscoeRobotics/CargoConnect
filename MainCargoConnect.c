@@ -75,7 +75,7 @@ task main()
 	while(true)                   // infinite loop:
 	{
 
-			//While the left button (5) is pressed
+		//While the left button (5) is pressed
 		if ((getButtonPress(buttonLeft) == 1) && missionIndex > 0)
 		{
 
@@ -103,14 +103,14 @@ task main()
 		if (getButtonPress(buttonEnter) == 1)
 		{
 
-				if (missionIndex == 0) secondCenterMission();
-				if (missionIndex == 1) getBlueBoxMission();
-				if (missionIndex == 2) northWallMission();
-				if (missionIndex == 3) southWallMission();
-				if (missionIndex == 4) eastWallMission();
-				if (missionIndex == 5) pushBlueBoxMission();
-				if (missionIndex == 6) endMission();
-				if (missionIndex == 7) cleanWheels();
+			if (missionIndex == 0) secondCenterMission();
+			if (missionIndex == 1) getBlueBoxMission();
+			if (missionIndex == 2) northWallMission();
+			if (missionIndex == 3) southWallMission();
+			if (missionIndex == 4) eastWallMission();
+			if (missionIndex == 5) pushBlueBoxMission();
+			if (missionIndex == 6) endMission();
+			if (missionIndex == 7) cleanWheels();
 
 		}
 
