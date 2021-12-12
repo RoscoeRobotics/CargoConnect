@@ -44,11 +44,12 @@ void displayMissionName(int missionIndex)
 	if (missionIndex == 0) displayCenteredBigTextLine(2, "Center" );
 	if (missionIndex == 1) displayCenteredBigTextLine(2, "Get Blue Box" );
 	if (missionIndex == 2) displayCenteredBigTextLine(2, "North Wall" );
-	if (missionIndex == 3) displayCenteredBigTextLine(2, "South Wall" );
-	if (missionIndex == 4) displayCenteredBigTextLine(2, "East Wall" );
-	if (missionIndex == 5) displayCenteredBigTextLine(2, "Push Blue Box" );
-	if (missionIndex == 6) displayCenteredBigTextLine(2, "End Mission" );
+	if (missionIndex == 3) displayCenteredBigTextLine(2, "Push Blue Box" );
+	if (missionIndex == 4) displayCenteredBigTextLine(2, "End Mission" );
+	if (missionIndex == 5) displayCenteredBigTextLine(2, "South Wall" );
+	if (missionIndex == 6) displayCenteredBigTextLine(2, "East Wall" );
 	if (missionIndex == 7) displayCenteredBigTextLine(2, "Clean Wheels" );
+
 
 }
 
@@ -61,7 +62,6 @@ task main()
 
 	// Reset the gyro when the program starts
 	resetGyro(gyro);
-
 
 	// Setting up initial values and display
 	int missionIndex;
@@ -103,13 +103,13 @@ task main()
 		if (getButtonPress(buttonEnter) == 1)
 		{
 
-			if (missionIndex == 0) secondCenterMission();
+			if (missionIndex == 0) centerMission();
 			if (missionIndex == 1) getBlueBoxMission();
 			if (missionIndex == 2) northWallMission();
-			if (missionIndex == 3) southWallMission();
-			if (missionIndex == 4) eastWallMission();
-			if (missionIndex == 5) pushBlueBoxMission();
-			if (missionIndex == 6) endMission();
+			if (missionIndex == 3) pushBlueBoxMission();
+			if (missionIndex == 4) endMission();
+			if (missionIndex == 5) southWallMission();
+			if (missionIndex == 6) eastWallMission();
 			if (missionIndex == 7) cleanWheels();
 
 		}
